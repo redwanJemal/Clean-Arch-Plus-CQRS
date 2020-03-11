@@ -3,6 +3,7 @@ using CQRSApp.Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CQRSApp.Repositories.Domain
 {
@@ -11,7 +12,7 @@ namespace CQRSApp.Repositories.Domain
         ICourseRepository CourseRepositroy { get; set; }
         IDepartmentRepository DepartmentRepositroy { get; set; }
 
-        void Commit();
+        Task<int> Commit();
         void RollBack();
     }
 }

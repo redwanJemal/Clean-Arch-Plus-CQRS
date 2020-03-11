@@ -11,5 +11,15 @@ namespace CQRSApp.Domain.Entites
         public int CreditHour { get; set; }
         public bool HasPreRequest { get; set; }
         public Department Department { get; set; }
+        public Course()
+        {
+
+        }
+        public Course(string name, int creditHour, bool hasPreRequest)
+        {
+            Name = name;
+            CreditHour = creditHour;
+            HasPreRequest = hasPreRequest;
+        }
     }
 }

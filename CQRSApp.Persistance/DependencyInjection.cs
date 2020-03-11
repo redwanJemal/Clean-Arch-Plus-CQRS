@@ -16,8 +16,9 @@ namespace CQRSApp.Persistance
             services.AddScoped<IUnitOfWork, CQRSAppDBContext>();
 
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddDbContext<CQRSAppDBContext>(options =>
-              options.UseSqlServer(configuration.GetConnectionString("TodoAppDatabase")));
+              options.UseSqlServer(configuration.GetConnectionString("CQRSAppDatabase")));
 
             return services;
         }

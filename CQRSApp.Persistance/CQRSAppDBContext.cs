@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CQRSApp.Persistance
 {
@@ -22,10 +23,11 @@ namespace CQRSApp.Persistance
         {
             context = this;
             CourseRepositroy = new CourseRepository(context);
+            DepartmentRepositroy = new DepartmentRepository(context);
         }
-        public void Commit()
+        public async Task<int> Commit()
         {
-            this.SaveChanges();
+            return await this.SaveChangesAsync();
         }
 
         public void RollBack()

@@ -16,6 +16,11 @@ namespace CQRSApp.Domain.Entites
         {
             Courses = new Collection<Course>();
         }
+        public Department(string name, string schoolName)
+        {
+            Name = name;
+            SchoolName = schoolName;
+        }
 
     }
 }
