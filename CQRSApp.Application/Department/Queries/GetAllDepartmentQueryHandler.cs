@@ -2,10 +2,13 @@
 using CQRSApp.Application.Queries.QueryModels;
 using CQRSApp.Domain.Repositories;
 using CQRSApp.Repositories.Domain;
+using Dapper;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,10 +27,15 @@ namespace CQRSApp.Application.Queries.Department
         }
         public async Task<List<DepartmentQueryModel>> Handle(GetAllDepartmentQuery request, CancellationToken cancellationToken)
         {
-            var departments = await _repo.GetAll();
-            List<DepartmentQueryModel> departmentsQ = _mapper.Map<List<CQRSApp.Domain.Entites.Department>, List<DepartmentQueryModel>>(departments);
-
-            return departmentsQ;
+            var connectionString = "Server=(localdb)\\mssqllocaldb;Database=CQRSApp;Trusted_Connection=True;MultipleActiveResultSets=true;";
+            var query = "SELECT * from Departments ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                //Do some magic here
+                connection.Open();
+                var department = await connection.QueryAsync<DepartmentQueryModel>(query, new { Offset = (request.PageNumber - 1) * request.PageSize, PageSize = request.PageSize});
+                return department.ToList();
+            }
         }
     }
     public class GetAllDepartmentQuery: IRequest<List<DepartmentQueryModel>>
@@ -38,7 +46,7 @@ namespace CQRSApp.Application.Queries.Department
 
         public int PageSize
         {
-            get { return pageSize = 10; }
+            get { return pageSize; }
             set { pageSize = (value > MaxPageSize)?MaxPageSize:value; }
         }
         public GetAllDepartmentQuery()
