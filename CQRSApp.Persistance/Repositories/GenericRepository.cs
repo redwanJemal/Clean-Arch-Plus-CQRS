@@ -28,7 +28,7 @@ namespace CQRSApp.Persistance.Repositories
 
         public void Update(TEntity entity)
         {
-            _dbSet.Update(entity);
+            _dbSet.Update(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
     }
 }

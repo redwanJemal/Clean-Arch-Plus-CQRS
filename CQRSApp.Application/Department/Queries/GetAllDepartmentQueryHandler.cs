@@ -18,13 +18,9 @@ namespace CQRSApp.Application.Queries.Department
 {
     public class GetAllDepartmentQueryHandler<TRequest, TResponse> : IRequestHandler<GetAllDepartmentQuery, PagedResults<DepartmentQueryModel>>
     {
-        private readonly IDepartmentRepository _repo;
-        private readonly IMapper _mapper;
 
-        public GetAllDepartmentQueryHandler(IUnitOfWork uow, IMapper mapper)
+        public GetAllDepartmentQueryHandler()
         {
-            _repo = uow.DepartmentRepositroy;
-            _mapper = mapper;
         }
         public async Task<PagedResults<DepartmentQueryModel>> Handle(GetAllDepartmentQuery request, CancellationToken cancellationToken)
         {

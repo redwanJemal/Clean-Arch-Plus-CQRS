@@ -27,6 +27,14 @@ namespace CQRSApp.Api.Controllers
             return Ok(command);
         }
 
+        [Route("update-department")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateDepartment([FromBody]UpdateDepartmentCommand department)
+        {
+            var command = await _mediator.Send(department);
+            return Ok(command);
+        }
+
 
         [HttpGet("get-department/{id}")]
         public async Task<IActionResult> GetDepartment(Guid id)

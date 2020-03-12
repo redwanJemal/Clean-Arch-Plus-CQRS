@@ -1,4 +1,5 @@
-﻿using CQRSApp.Application.Queries.QueryModels;
+﻿using AutoMapper;
+using CQRSApp.Application.Queries.QueryModels;
 using CQRSApp.Domain.Entites;
 using CQRSApp.Domain.Repositories;
 using CQRSApp.Repositories.Domain;
@@ -15,23 +16,38 @@ namespace CQRSApp.Application.Commands
     {
         private readonly IDepartmentRepository _repo;
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public UpdateDepartmentCommandHandler(IUnitOfWork Uow)
+        public UpdateDepartmentCommandHandler(IUnitOfWork Uow, IMapper mapper)
         {
             _repo = Uow.DepartmentRepositroy;
             _uow = Uow;
+            _mapper = mapper;
         }
 
         public async Task<DepartmentQueryModel> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
         {
-            Department department = new Department(request.Name,request.SchoolName);
-            var newDepartment = _repo.Add(department);
 
-            DepartmentQueryModel departmentQ = new DepartmentQueryModel(newDepartment.Id, newDepartment.Name, newDepartment.SchoolName);
+            DepartmentQueryModel departmentQ = new DepartmentQueryModel(request.Id, request.Name, request.SchoolName);
 
-            await _uow.Commit();
+            if (request.Id != null)
+            {
+                try
+                {
+                    Department department = _mapper.Map<Department>(departmentQ);
+                    _repo.Update(department);
 
-            return departmentQ;
+                    await _uow.Commit();
+                    return departmentQ;
+                }
+                catch (Exception)
+                {
+                    _uow.RollBack();
+                    return null;
+                }
+            }
+            return null;
+
         }
     }
 
