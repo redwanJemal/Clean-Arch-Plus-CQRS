@@ -60,7 +60,7 @@ namespace CQRSApp.Api
             services.AddTransient(typeof(IRequestHandler<CreateCourseCommand, Course>), typeof(CreateCourseCommandHandler<CreateCourseCommand, Course>));
             services.AddTransient(typeof(IRequestHandler<GetDepartmentQuery, DepartmentQueryModel>), typeof(GetDepartmentQueryHandler<GetDepartmentQuery, DepartmentQueryModel>));
             services.AddTransient(typeof(IRequestHandler<CreateDepartmentCommand, DepartmentQueryModel>), typeof(CreateDepartmentCommandHandler<CreateDepartmentCommand, DepartmentQueryModel>));
-            services.AddTransient(typeof(IRequestHandler<GetAllDepartmentQuery, List<DepartmentQueryModel>>), typeof(GetAllDepartmentQueryHandler<GetAllDepartmentQuery, List<DepartmentQueryModel>>));
+            services.AddTransient(typeof(IRequestHandler<GetAllDepartmentQuery, PagedResults<DepartmentQueryModel>>), typeof(GetAllDepartmentQueryHandler<GetAllDepartmentQuery, PagedResults<DepartmentQueryModel>>));
             services.AddTransient(typeof(IRequestHandler<DeleteDepartmentCommand, bool>), typeof(DeleteDepartmentCommandHandler<DeleteDepartmentCommand, bool>));
             services.AddInfrastructure(Configuration);
         }

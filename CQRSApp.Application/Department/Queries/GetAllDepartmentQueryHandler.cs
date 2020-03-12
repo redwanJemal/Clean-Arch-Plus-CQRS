@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CQRSApp.Application.Helpers;
 using CQRSApp.Application.Queries.QueryModels;
 using CQRSApp.Domain.Repositories;
 using CQRSApp.Repositories.Domain;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Queries.Department
 {
-    public class GetAllDepartmentQueryHandler<TRequest, TResponse> : IRequestHandler<GetAllDepartmentQuery, List<DepartmentQueryModel>>
+    public class GetAllDepartmentQueryHandler<TRequest, TResponse> : IRequestHandler<GetAllDepartmentQuery, PagedResults<DepartmentQueryModel>>
     {
         private readonly IDepartmentRepository _repo;
         private readonly IMapper _mapper;
@@ -25,20 +26,27 @@ namespace CQRSApp.Application.Queries.Department
             _repo = uow.DepartmentRepositroy;
             _mapper = mapper;
         }
-        public async Task<List<DepartmentQueryModel>> Handle(GetAllDepartmentQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResults<DepartmentQueryModel>> Handle(GetAllDepartmentQuery request, CancellationToken cancellationToken)
         {
+            var results = new PagedResults<DepartmentQueryModel>();
             var connectionString = "Server=(localdb)\\mssqllocaldb;Database=CQRSApp;Trusted_Connection=True;MultipleActiveResultSets=true;";
-            var query = "SELECT * from Departments ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+            var query = @"SELECT COUNT(*) FROM Departments
+                        SELECT * from Departments ORDER BY Id OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Do some magic here
                 connection.Open();
-                var department = await connection.QueryAsync<DepartmentQueryModel>(query, new { Offset = (request.PageNumber - 1) * request.PageSize, PageSize = request.PageSize});
-                return department.ToList();
+                using (var multi = await connection.QueryMultipleAsync(query))
+                {
+                    results.TotalCount = multi.Read<int>().Single();
+                    results.Items = multi.Read<DepartmentQueryModel>().ToList();
+                }
             }
+            return results;
+
         }
     }
-    public class GetAllDepartmentQuery: IRequest<List<DepartmentQueryModel>>
+    public class GetAllDepartmentQuery: IRequest<PagedResults<DepartmentQueryModel>>
     {
         public int MaxPageSize = 50;
         public int PageNumber { get; set; } = 1;
