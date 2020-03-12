@@ -31,12 +31,14 @@ namespace CQRSApp.Application.Queries.Department
             var results = new PagedResults<DepartmentQueryModel>();
             var connectionString = "Server=(localdb)\\mssqllocaldb;Database=CQRSApp;Trusted_Connection=True;MultipleActiveResultSets=true;";
             var query = @"SELECT COUNT(*) FROM Departments
-                        SELECT * from Departments ORDER BY Id OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY";
+                        SELECT * from Departments ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 //Do some magic here
                 connection.Open();
-                using (var multi = await connection.QueryMultipleAsync(query))
+                using (var multi = await connection.QueryMultipleAsync(query, new {
+                    Offset = (request.PageNumber - 1) * request.PageSize, PageSize = request.PageSize
+                }))
                 {
                     results.TotalCount = multi.Read<int>().Single();
                     results.Items = multi.Read<DepartmentQueryModel>().ToList();
@@ -60,6 +62,11 @@ namespace CQRSApp.Application.Queries.Department
         public GetAllDepartmentQuery()
         {
                 
+        }
+        public GetAllDepartmentQuery(int pageSize, int pageNumber)
+        {
+            PageSize = pageSize;
+            PageNumber = pageNumber;
         }
 
     }

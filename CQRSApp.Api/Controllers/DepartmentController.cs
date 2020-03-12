@@ -39,9 +39,9 @@ namespace CQRSApp.Api.Controllers
 
 
         [HttpGet("get-departments")]
-        public async Task<IActionResult> GetDepartments()
+        public async Task<IActionResult> GetAllDepartments([FromQuery]GetAllDepartmentQuery query)
         {
-            var departments = await _mediator.Send(new GetAllDepartmentQuery());
+            var departments = await _mediator.Send(query);
             return Ok(departments);
         }
 
