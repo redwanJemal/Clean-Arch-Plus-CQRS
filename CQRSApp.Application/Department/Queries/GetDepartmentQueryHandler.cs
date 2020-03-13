@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Queries.Department
 {
-    public class GetDepartmentQueryHandler<TRequest, TResponse> : IRequestHandler<GetDepartmentQuery, DepartmentQueryModel>
+    public class GetDepartmentQueryHandler : IRequestHandler<GetDepartmentQuery, DepartmentQueryModel>
     {
 
         public GetDepartmentQueryHandler()

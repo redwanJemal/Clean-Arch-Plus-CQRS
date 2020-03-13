@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Commands
 {
-    public class CreateDepartmentCommandHandler<TRequest,TResponse> : IRequestHandler<CreateDepartmentCommand, DepartmentQueryModel>
+    public class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, DepartmentQueryModel>
     {
         private readonly IDepartmentRepository _repo;
         private readonly IUnitOfWork _uow;

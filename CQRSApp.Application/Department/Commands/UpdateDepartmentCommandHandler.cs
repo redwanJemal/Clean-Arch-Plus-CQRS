@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Commands
 {
-    public class UpdateDepartmentCommandHandler<TRequest,TResponse> : IRequestHandler<UpdateDepartmentCommand, DepartmentQueryModel>
+    public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand, DepartmentQueryModel>
     {
         private readonly IDepartmentRepository _repo;
         private readonly IUnitOfWork _uow;

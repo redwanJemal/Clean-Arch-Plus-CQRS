@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Commands
 {
-    public class DeleteDepartmentCommandHandler<TRequest,TResponse> : IRequestHandler<DeleteDepartmentCommand, bool>
+    public class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartmentCommand, bool>
     {
         private readonly IDepartmentRepository _repo;
         private readonly IUnitOfWork _uow;

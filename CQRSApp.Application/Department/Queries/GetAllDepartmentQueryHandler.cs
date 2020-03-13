@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Queries.Department
 {
-    public class GetAllDepartmentQueryHandler<TRequest, TResponse> : IRequestHandler<GetAllDepartmentQuery, PagedResults<DepartmentQueryModel>>
+    public class GetAllDepartmentQueryHandler : IRequestHandler<GetAllDepartmentQuery, PagedResults<DepartmentQueryModel>>
     {
 
         public GetAllDepartmentQueryHandler()

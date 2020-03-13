@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Commands
 {
-    public class CreateCourseCommandHandler<TRequest,TResponse> : IRequestHandler<CreateCourseCommand, Course>
+    public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, Course>
     {
         private readonly ICourseRepository _repo;
         private readonly IUnitOfWork _uow;
