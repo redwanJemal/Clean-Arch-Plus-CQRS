@@ -35,11 +35,7 @@ namespace Cataloging.Api.Infrastructure.AutofacModules
                 var componentContext = context.Resolve<IComponentContext>();
                 return t => { object o; return componentContext.TryResolve(t, out o) ? o : null; };
             });
-
-            //builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            // TODO: Add every context's validator and transaction behaviours 
             builder.RegisterGeneric(typeof(ValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>));
-            //builder.RegisterGeneric(typeof(ContractCatalogsTransactionBehaviour<,>)).As(typeof(IPipelineBehavior<,>));
 
         }
     }

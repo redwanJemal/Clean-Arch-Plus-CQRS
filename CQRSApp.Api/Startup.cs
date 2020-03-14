@@ -49,6 +49,8 @@ namespace CQRSApp.Api
             {
                 cfg.AddProfile(new AutoMapperProfile());
             });
+            IMapper mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
             services.AddDbContext<CQRSAppDBContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("CQRSAppDatabase")));
             var container = new ContainerBuilder();

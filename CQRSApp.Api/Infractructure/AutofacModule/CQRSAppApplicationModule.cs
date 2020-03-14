@@ -24,28 +24,6 @@ namespace CQRSApp.Api.Infrastructure.AutofaceModule
         {
             RegisterTypes(builder);
 
-            //builder.Register(c =>
-            //{
-            //    var config = c.Resolve<Microsoft.Extensions.Configuration.IConfiguration>();
-            //    var mediator = c.Resolve<IMediator>();
-
-            //    var options = new DbContextOptionsBuilder<CQRSAppDBContext>();
-
-            //    options.UseSqlServer(QueriesConnectionString,
-            //        options: pgOptions =>
-            //        {
-            //            pgOptions.MigrationsAssembly(typeof(ProductCatalogContext).GetTypeInfo().Assembly.GetName().Name);
-            //            pgOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorCodesToAdd: null);
-            //        });
-
-
-            //    return new CQRSAppDBContext(options.Options, mediator);
-            //}).InstancePerLifetimeScope();
-
-            //builder.RegisterType<ProductCatalogRequestManager>()
-            //   .As<IRequestManager>()
-            //   .InstancePerLifetimeScope();
-
             // TODO: Use one of given commands as a base
             builder.RegisterAssemblyTypes(typeof(CQRSApp.Application.Commands.CreateCourseCommandHandler).GetTypeInfo().Assembly)
                 .AsClosedTypesOf(typeof(IRequestHandler<,>));
@@ -55,10 +33,6 @@ namespace CQRSApp.Api.Infrastructure.AutofaceModule
         
         private void RegisterTypes(ContainerBuilder builder)
         {
-
-            //builder.Register(c => new Cataloging.ProductCatalog.Application.Queries.CatalogQueries.CatalogQueryPG(QueriesConnectionString))
-            //    .As<Cataloging.ProductCatalog.Application.Queries.CatalogQueries.ICatalogQuery>()
-            //    .InstancePerLifetimeScope();
 
             builder.RegisterType<CQRSAppDBContext>()
                 .As<IUnitOfWork>()
