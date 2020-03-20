@@ -12,6 +12,7 @@ namespace CQRSApp.Application.Helpers
         public AutoMapperProfile()
         {
             CreateMap<Department, DepartmentQueryModel>().ReverseMap();
+            CreateMap<Department, DepartmentUpdateQueryModel>().ReverseMap();
         }
     }
 }

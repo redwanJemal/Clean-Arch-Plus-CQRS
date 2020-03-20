@@ -11,7 +11,6 @@ namespace CQRSApp.Application.Validations
         public CreateDepartmentCommandValidator()
         {
             RuleFor(d => d.Name).NotEmpty();
-            RuleFor(d => d.SchoolName).NotEmpty();
         }
     }
 }

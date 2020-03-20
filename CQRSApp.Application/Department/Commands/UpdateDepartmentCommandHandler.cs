@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Commands
 {
-    public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand, DepartmentQueryModel>
+    public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand, DepartmentUpdateQueryModel>
     {
         private readonly IDepartmentRepository _repo;
         private readonly IUnitOfWork _uow;
@@ -25,10 +25,10 @@ namespace CQRSApp.Application.Commands
             _mapper = mapper;
         }
 
-        public async Task<DepartmentQueryModel> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
+        public async Task<DepartmentUpdateQueryModel> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
         {
 
-            DepartmentQueryModel departmentQ = new DepartmentQueryModel(request.Id, request.Name, request.SchoolName);
+            DepartmentUpdateQueryModel departmentQ = new DepartmentUpdateQueryModel(request.Id, request.Name);
 
             if (request.Id != null)
             {
@@ -51,17 +51,15 @@ namespace CQRSApp.Application.Commands
         }
     }
 
-    public class UpdateDepartmentCommand: IRequest<DepartmentQueryModel>
+    public class UpdateDepartmentCommand: IRequest<DepartmentUpdateQueryModel>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string SchoolName { get; set; }
 
         public UpdateDepartmentCommand(Guid id, string name, string schoolName)
         {
             Id = id;
             Name = name;
-            SchoolName = schoolName;
         }
         public UpdateDepartmentCommand()
         {

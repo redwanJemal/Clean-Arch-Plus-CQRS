@@ -1,4 +1,5 @@
 ﻿using CQRSApp.Application.Commands;
+using CQRSApp.Application.Course.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,17 +28,13 @@ namespace CQRSApp.Api.Controllers
         }
 
 
-        [Route("add-value")]
-        [HttpPost]
-        public IActionResult AddValue(int id, string name)
+        [HttpGet("get-courset")]
+        public async Task<IActionResult> GetDepartment(GetAllCoursesQuery query)
         {
-            return Ok(name);
-        }
-        // GET api/values
-        [HttpGet("values")]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
+            var result = await _mediator.Send(query);
+            if (result == null)
+                return NotFound();
+            return Ok(result);
         }
     }
 }

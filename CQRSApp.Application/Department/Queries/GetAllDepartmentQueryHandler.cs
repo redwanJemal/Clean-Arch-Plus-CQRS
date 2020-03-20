@@ -46,6 +46,7 @@ namespace CQRSApp.Application.Queries.Department
     }
     public class GetAllDepartmentQuery: IRequest<PagedResults<DepartmentQueryModel>>
     {
+        public string SearchString { get; set; }
         public int MaxPageSize = 50;
         public int PageNumber { get; set; } = 1;
         private int pageSize = 10;
@@ -59,10 +60,11 @@ namespace CQRSApp.Application.Queries.Department
         {
                 
         }
-        public GetAllDepartmentQuery(int pageSize, int pageNumber)
+        public GetAllDepartmentQuery(string searchString,int pageSize, int pageNumber)
         {
             PageSize = pageSize;
             PageNumber = pageNumber;
+            SearchString = searchString;
         }
 
     }

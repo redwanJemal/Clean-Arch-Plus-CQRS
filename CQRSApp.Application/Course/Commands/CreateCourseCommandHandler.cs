@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace CQRSApp.Application.Commands
 {
-    public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, Course>
+    public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, CQRSApp.Domain.Entites.Course>
     {
         private readonly ICourseRepository _repo;
         private readonly IUnitOfWork _uow;
 
-        public CreateCourseCommandHandler(ICourseRepository repo, IUnitOfWork Uow)
+        public CreateCourseCommandHandler(IUnitOfWork Uow)
         {
-            _repo = repo;
+            _repo = Uow.CourseRepositroy;
             _uow = Uow;
         }
 
-        public async Task<Course> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
+        public async Task<CQRSApp.Domain.Entites.Course> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
         {
-            Course course = new Course(request.Name,request.CreditHour,request.HasPreRequest);
+            CQRSApp.Domain.Entites.Course course = new CQRSApp.Domain.Entites.Course(request.DepartmentId,request.Name,request.CreditHour,request.HasPreRequest);
             var newCourse = _repo.Add(course);
 
             await _uow.Commit();
@@ -32,17 +32,19 @@ namespace CQRSApp.Application.Commands
         }
     }
 
-    public class CreateCourseCommand: IRequest<Course>
+    public class CreateCourseCommand: IRequest<CQRSApp.Domain.Entites.Course>
     {
+        public Guid DepartmentId { get; set; }
         public string Name { get; set; }
         public int CreditHour { get; set; }
         public bool HasPreRequest { get; set; }
 
-        public CreateCourseCommand(string name, int creditHour, bool hasPreRequest)
+        public CreateCourseCommand(Guid departmentId, string name, int creditHour, bool hasPreRequest)
         {
             Name = name;
             CreditHour = creditHour;
             HasPreRequest = hasPreRequest;
+            DepartmentId = departmentId;
         }
         public CreateCourseCommand()
         {

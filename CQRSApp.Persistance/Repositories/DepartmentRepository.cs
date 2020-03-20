@@ -15,9 +15,12 @@ namespace CQRSApp.Persistance
     public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepository
     {
         private DbSet<Department> departments;
+        private readonly CQRSAppDBContext context;
+
         public DepartmentRepository(CQRSAppDBContext context): base(context)
         {
             departments = context.Departments;
+            this.context = context;
         }
         public async Task<Department> GetById(Guid id)
         {
@@ -28,6 +31,11 @@ namespace CQRSApp.Persistance
         {
             var depar = await departments.ToListAsync();
             return depar;
+        }
+        public override void Update(Department entity)
+        {
+            departments.Attach(entity);
+            context.Entry(entity).Property(x => x.Name).IsModified = true;
         }
     }
 }

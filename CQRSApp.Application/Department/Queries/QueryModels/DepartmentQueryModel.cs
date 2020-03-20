@@ -16,6 +16,11 @@ namespace CQRSApp.Application.Queries.QueryModels
             Name = name;
             SchoolName = schollName;
         }
+        public DepartmentQueryModel(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
         public DepartmentQueryModel()
         {
 
